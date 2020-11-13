@@ -1143,7 +1143,7 @@ type CommitAuthor struct {
 	Email string    `json:"email,omitempty"`
 
 	// The following fields are only populated by Webhook events.
-	Login string `json:"username,omitempty"`
+	Login *string `json:"username,omitempty"`
 }
 
 // SignatureVerification represents GPG signature verification.
