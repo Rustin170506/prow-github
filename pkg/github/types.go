@@ -814,14 +814,6 @@ type Commit struct {
 	Modified []string `json:"modified,omitempty"`
 }
 
-// SingleCommit is the commit part received when requesting a single commit
-// https://developer.github.com/v3/repos/commits/#get-a-single-commit
-type SingleCommit struct {
-	Commit struct {
-		Tree Tree `json:"tree"`
-	} `json:"commit"`
-}
-
 // Tree represents a GitHub tree.
 type Tree struct {
 	SHA string `json:"sha,omitempty"`
