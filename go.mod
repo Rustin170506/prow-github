@@ -1,6 +1,6 @@
 module github.com/tidb-community-bots/prow-github
 
-go 1.14
+go 1.15
 
 replace (
 	k8s.io/api => k8s.io/api v0.19.3
