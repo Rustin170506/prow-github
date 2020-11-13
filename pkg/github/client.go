@@ -1799,6 +1799,7 @@ func (c *client) UpdatePullRequestBranch(org, repo string, number int, expectedH
 	code, err := c.request(&request{
 		method:      http.MethodPut,
 		path:        fmt.Sprintf("/repos/%s/%s/pulls/%d/update-branch", org, repo, number),
+		accept:      "application/vnd.github.lydian-preview+json",
 		requestBody: &data,
 		exitCodes:   []int{202, 422},
 	}, &ge)
