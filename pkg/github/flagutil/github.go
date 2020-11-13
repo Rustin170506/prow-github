@@ -8,10 +8,10 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"github.com/tidb-community-bots/prow-github/pkg/github"
 	"k8s.io/test-infra/prow/config/secret"
 	prowflagutil "k8s.io/test-infra/prow/flagutil"
 	"k8s.io/test-infra/prow/git"
-	"k8s.io/test-infra/prow/github"
 )
 
 // GitHubOptions holds options for interacting with GitHub.

@@ -883,10 +883,6 @@ var userInfo = prometheus.NewGaugeVec(
 	[]string{"token_hash", "login", "email"},
 )
 
-func init() {
-	prometheus.MustRegister(userInfo)
-}
-
 // Not thread-safe - callers need to hold c.mut.
 func (c *client) getUserData() error {
 	c.log("User")
