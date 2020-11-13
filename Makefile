@@ -1,6 +1,5 @@
-PROJECT=go-boilerplate
+PROJECT=prow-github
 GOPATH ?= $(shell go env GOPATH)
-P=8
 
 # Ensure GOPATH is set before running build process.
 ifeq "$(GOPATH)" ""
@@ -14,30 +13,30 @@ export PATH := $(path_to_add):$(PATH)
 
 GO              := GO111MODULE=on go
 GOBUILD         := $(GO) build
-GOTEST          := $(GO) test -p $(P)
+GOTEST          := $(GO) test
 
 PACKAGE_LIST  := go list ./...
 PACKAGES  := $$($(PACKAGE_LIST))
-PACKAGE_DIRECTORIES := $(PACKAGE_LIST) | sed 's|github.com/tidb-community-bots/$(PROJECT)||'
-FILES     := $$(find .$$($(PACKAGE_DIRECTORIES)) -name "*.go")
+PACKAGE_DIRECTORIES := $(PACKAGE_LIST) | sed 's|github.com/tidb-community-bots/$(PROJECT)/||'
+FILES     := $$(find $$($(PACKAGE_DIRECTORIES)) -name "*.go")
 
 
-.PHONY: build clean test dev check tidy
-
-build:
-	$(GOBUILD)
+.PHONY: clean test dev check tidy
 
 clean:
 	$(GO) clean -i ./...
 	rm -rf *.out
 
 test:
-	$(GOTEST)
+	$(GOTEST) $(PACKAGES)
 	@>&2 echo "Great, all tests passed."
+
+test-with-coverage:
+	$(GOTEST) $(PACKAGES) -race -coverprofile=coverage.txt -covermode=atomic
 
 dev: check test
 
-check: fmt tidy staticcheck
+check: fmt tidy
 
 fmt:
 	@echo "gofmt (simplify)"
@@ -46,10 +45,3 @@ fmt:
 tidy:
 	@echo "go mod tidy"
 	./tools/check/check-tidy.sh
-
-staticcheck: tools/bin/golangci-lint
-	tools/bin/golangci-lint run  $$($(PACKAGE_DIRECTORIES))
-
-tools/bin/golangci-lint:
-	curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b ./tools/bin v1.31.0
-
