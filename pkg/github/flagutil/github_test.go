@@ -1,10 +1,10 @@
 package flagutil
 
 import (
+	"github.com/tidb-community-bots/prow-github/pkg/github"
 	"testing"
 
 	prowflagutil "k8s.io/test-infra/prow/flagutil"
-	"k8s.io/test-infra/prow/github"
 )
 
 func TestGitHubOptions_Validate(t *testing.T) {
