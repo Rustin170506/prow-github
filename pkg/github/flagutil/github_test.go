@@ -1,9 +1,9 @@
 package flagutil
 
 import (
-	prowflagutil "k8s.io/test-infra/prow/flagutil"
 	"testing"
 
+	prowflagutil "k8s.io/test-infra/prow/flagutil"
 	"k8s.io/test-infra/prow/github"
 )
 
