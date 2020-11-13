@@ -873,15 +873,19 @@ func (c *client) authHeader() string {
 	return fmt.Sprintf("Bearer %s", token)
 }
 
-// userInfo provides the 'github_user_info' vector that is indexed
+// externalUserInfo provides the 'github_user_info' vector that is indexed
 // by the user's information.
-var userInfo = prometheus.NewGaugeVec(
+var externalUserInfo = prometheus.NewGaugeVec(
 	prometheus.GaugeOpts{
-		Name: "github_user_info",
-		Help: "Metadata about a user, tied to their token hash.",
+		Name: "external_github_user_info",
+		Help: "Metadata about a external user, tied to their token hash.",
 	},
 	[]string{"token_hash", "login", "email"},
 )
+
+func init() {
+	prometheus.MustRegister(externalUserInfo)
+}
 
 // Not thread-safe - callers need to hold c.mut.
 func (c *client) getUserData() error {
@@ -902,7 +906,7 @@ func (c *client) getUserData() error {
 
 	// record information for the user
 	authHeaderHash := fmt.Sprintf("%x", sha256.Sum256([]byte(c.authHeader()))) // use %x to make this a utf-8 string for use as a label
-	userInfo.With(prometheus.Labels{"token_hash": authHeaderHash, "login": c.userData.Login, "email": c.userData.Email}).Set(1)
+	externalUserInfo.With(prometheus.Labels{"token_hash": authHeaderHash, "login": c.userData.Login, "email": c.userData.Email}).Set(1)
 	return nil
 }
 
