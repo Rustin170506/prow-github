@@ -1118,8 +1118,8 @@ type CommitFile struct {
 // GitCommit represents a GitHub commit.
 type GitCommit struct {
 	SHA          string                 `json:"sha,omitempty"`
-	Author       User                   `json:"author,omitempty"`
-	Committer    User                   `json:"committer,omitempty"`
+	Author       CommitAuthor           `json:"author,omitempty"`
+	Committer    CommitAuthor           `json:"committer,omitempty"`
 	Message      string                 `json:"message,omitempty"`
 	Tree         Tree                   `json:"tree,omitempty"`
 	Parents      []GitCommit            `json:"parents,omitempty"`
@@ -1132,7 +1132,18 @@ type GitCommit struct {
 	// CommentCount is the number of GitHub comments on the commit. This
 	// is only populated for requests that fetch GitHub data like
 	// Pulls.ListCommits, Repositories.ListCommits, etc.
-	CommentCount int `json:"comment_count,omitempty"`
+	CommentCount *int `json:"comment_count,omitempty"`
+}
+
+// CommitAuthor represents the author or committer of a commit. The commit
+// author may not correspond to a GitHub User.
+type CommitAuthor struct {
+	Date  time.Time `json:"date,omitempty"`
+	Name  string    `json:"name,omitempty"`
+	Email string    `json:"email,omitempty"`
+
+	// The following fields are only populated by Webhook events.
+	Login *string `json:"username,omitempty"`
 }
 
 // SignatureVerification represents GPG signature verification.
